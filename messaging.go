@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/MuhtasimTanmoy/messaging_server/internal/app/controller"
+	"github.com/MuhtasimTanmoy/messaging_server/internal/pkg/broadcast"
 	"github.com/gin-gonic/gin"
 )
 
@@ -26,6 +27,15 @@ func main() {
 	r.GET("/favicon.ico", func(c *gin.Context) {
 		c.String(http.StatusNoContent, "")
 	})
+
+	r.GET("/chat", controller.Chat)
+
+	socket := &broadcast.Websocket{}
+	socket.Init()
+	r.GET("/ws", func(c *gin.Context) {
+		socket.HandleConnections(c.Writer, c.Request)
+	})
+	go socket.HandleMessages()
 
 	r.Run()
 }

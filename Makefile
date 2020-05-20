@@ -76,7 +76,7 @@ vet:
 
 ## dev_run: Run the application main file.
 dev_run:
-	$(GO) run beaver.go
+	$(GO) run messaging.go
 
 
 ## prod_run: Build and run the application.
