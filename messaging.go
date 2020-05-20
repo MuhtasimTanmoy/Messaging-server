@@ -20,7 +20,7 @@ func main() {
 	}
 
 	r := gin.Default()
-	r.Static("/assets", "./assets")
+	r.Static("/static", "./web/static/")
 	r.LoadHTMLGlob("templates/*")
 	r.GET("/", controller.Index)
 	r.GET("/_healthcheck", controller.HealthCheck)
@@ -33,7 +33,7 @@ func main() {
 	socket := &broadcast.Websocket{}
 	socket.Init()
 	r.GET("/ws", func(c *gin.Context) {
-		socket.HandleConnections(c.Writer, c.Request)
+		socket.HandleConnections(c.Writer, c.Request, c.DefaultQuery("channel", ""))
 	})
 	go socket.HandleMessages()
 

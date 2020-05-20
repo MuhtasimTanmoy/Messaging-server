@@ -2,7 +2,7 @@ package broadcast
 
 import (
 	"net/http"
-
+    _ "fmt"
 	"github.com/MuhtasimTanmoy/messaging_server/internal/package/logger"
 	"github.com/gorilla/websocket"
 )
@@ -12,18 +12,19 @@ type Message struct {
 	Email    string `json:"email"`
 	Username string `json:"username"`
 	Message  string `json:"message"`
+	Channel  string `json:"channel"`
 }
 
 // Websocket Object
 type Websocket struct {
-	Clients   map[*websocket.Conn]bool
+	Clients   map[string]map[*websocket.Conn]bool
 	Broadcast chan Message
 	Upgrader  websocket.Upgrader
 }
 
 // Websocket Init
 func (e *Websocket) Init() {
-	e.Clients = make(map[*websocket.Conn]bool)
+	e.Clients = make(map[string]map[*websocket.Conn]bool)
 	e.Broadcast = make(chan Message)
 	e.Upgrader = websocket.Upgrader{
 		CheckOrigin: func(r *http.Request) bool {
@@ -38,19 +39,19 @@ func (e *Websocket) HandleMessages() {
 		// Grab the next message from the broadcast channel
 		msg := <-e.Broadcast
 		// Send it out to every client that is currently connected
-		for client := range e.Clients {
+		for client := range e.Clients[msg.Channel] {
 			err := client.WriteJSON(msg)
 			if err != nil {
 				logger.Infof("error: %v", err)
 				client.Close()
-				delete(e.Clients, client)
+				delete(e.Clients[msg.Channel], client)
 			}
 		}
 	}
 }
 
 // Websocket HandleConnections
-func (e *Websocket) HandleConnections(w http.ResponseWriter, r *http.Request) {
+func (e *Websocket) HandleConnections(w http.ResponseWriter, r *http.Request, channel string) {
 	// Upgrade initial GET request to a websocket
 	ws, err := e.Upgrader.Upgrade(w, r, nil)
 
@@ -62,7 +63,7 @@ func (e *Websocket) HandleConnections(w http.ResponseWriter, r *http.Request) {
 	defer ws.Close()
 
 	// Register our new client
-	e.Clients[ws] = true
+	e.Clients[channel][ws] = true
 
 	for {
 		var msg Message
@@ -72,7 +73,7 @@ func (e *Websocket) HandleConnections(w http.ResponseWriter, r *http.Request) {
 
 		if err != nil {
 			logger.Infof("error: %v", err)
-			delete(e.Clients, ws)
+			delete(e.Clients[channel], ws)
 			break
 		}
 

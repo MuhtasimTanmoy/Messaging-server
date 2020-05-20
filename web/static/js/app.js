@@ -1,3 +1,11 @@
+function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    return vars;
+}
+
 new Vue({
     el: '#app',
 
@@ -12,7 +20,7 @@ new Vue({
 
     created: function() {
         var self = this;
-        this.ws = new WebSocket('ws://' + window.location.host + '/ws');
+        this.ws = new WebSocket('ws://' + window.location.host + '/ws?channel=' + getUrlVars()["channel"]);
         this.ws.addEventListener('message', function(e) {
             var msg = JSON.parse(e.data);
             self.chatContent += '<div class="chip">'
@@ -33,7 +41,8 @@ new Vue({
                     JSON.stringify({
                         email: this.email,
                         username: this.username,
-                        message: $('<p>').html(this.newMsg).text() // Strip out html
+                        message: $('<p>').html(this.newMsg).text(), // Strip out html
+                        channel: getUrlVars()["channel"]
                     }
                 ));
                 this.newMsg = ''; // Reset newMsg
@@ -41,6 +50,7 @@ new Vue({
         },
 
         join: function () {
+
             if (!this.email) {
                 Materialize.toast('You must enter an email', 2000);
                 return
