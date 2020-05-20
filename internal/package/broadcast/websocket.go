@@ -3,7 +3,7 @@ package broadcast
 import (
 	"net/http"
 
-	"github.com/clivern/beaver/internal/pkg/logger"
+	"github.com/MuhtasimTanmoy/messaging_server/internal/package/logger"
 	"github.com/gorilla/websocket"
 )
 

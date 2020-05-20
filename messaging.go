@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/MuhtasimTanmoy/messaging_server/internal/app/controller"
-	"github.com/MuhtasimTanmoy/messaging_server/internal/pkg/broadcast"
+	"github.com/MuhtasimTanmoy/messaging_server/internal/package/broadcast"
 	"github.com/gin-gonic/gin"
 )
 
