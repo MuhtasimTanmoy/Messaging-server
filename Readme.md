@@ -14,6 +14,7 @@ Simple messeging server and channel test.
 # Later
 - Docker
 - Travis
+- Makefile
 
 
 
@@ -38,4 +39,5 @@ func main() {
 EOF
 ```
 
-- 
+- Healthcheck
+    - curl localhost:8080/_healthcheck

@@ -1,11 +1,31 @@
 package main
 
 import (
-	"fmt"
+	"io"
+	"net/http"
+	"os"
 
-	"rsc.io/quote"
+	"github.com/MuhtasimTanmoy/messaging_server/internal/app/controller"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	fmt.Println(quote.Hello())
+
+	if os.Getenv("AppMode") == "prod" {
+		gin.SetMode(gin.ReleaseMode)
+		gin.DisableConsoleColor()
+		f, _ := os.Create("var/logs/gin.log")
+		gin.DefaultWriter = io.MultiWriter(f)
+	}
+
+	r := gin.Default()
+	r.Static("/assets", "./assets")
+	r.LoadHTMLGlob("templates/*")
+	r.GET("/", controller.Index)
+	r.GET("/_healthcheck", controller.HealthCheck)
+	r.GET("/favicon.ico", func(c *gin.Context) {
+		c.String(http.StatusNoContent, "")
+	})
+
+	r.Run()
 }

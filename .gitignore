@@ -20,3 +20,5 @@ messagin_server
 
 # Ignore vendor and run dep ensure
 vendor
+
+.gitignore
