@@ -41,3 +41,5 @@ EOF
 
 - Healthcheck
     - curl localhost:8080/_healthcheck
+- ENV Setup
+    - export PATH="/Users/tanmoy/go/bin/:$PATH"    
