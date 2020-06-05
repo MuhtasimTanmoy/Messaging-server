@@ -4,7 +4,7 @@ import (
 	"io"
 	"net/http"
 	"os"
-
+	"fmt"
 	"github.com/MuhtasimTanmoy/messaging_server/internal/app/controller"
 	"github.com/MuhtasimTanmoy/messaging_server/internal/package/broadcast"
 	"github.com/gin-gonic/gin"
@@ -12,13 +12,13 @@ import (
 
 func main() {
 
+    fmt.Println("Init")
 	if os.Getenv("AppMode") == "prod" {
 		gin.SetMode(gin.ReleaseMode)
 		gin.DisableConsoleColor()
 		f, _ := os.Create("var/logs/gin.log")
 		gin.DefaultWriter = io.MultiWriter(f)
 	}
-
 	r := gin.Default()
 	r.Static("/static", "./web/static/")
 	r.LoadHTMLGlob("templates/*")
@@ -27,15 +27,14 @@ func main() {
 	r.GET("/favicon.ico", func(c *gin.Context) {
 		c.String(http.StatusNoContent, "")
 	})
-
 	r.GET("/chat", controller.Chat)
-
 	socket := &broadcast.Websocket{}
 	socket.Init()
 	r.GET("/ws", func(c *gin.Context) {
+	     fmt.Println("WS called")
+	     fmt.Println(c.DefaultQuery("channel", ""))
 		socket.HandleConnections(c.Writer, c.Request, c.DefaultQuery("channel", ""))
 	})
 	go socket.HandleMessages()
-
 	r.Run()
 }

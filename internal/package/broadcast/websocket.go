@@ -2,7 +2,6 @@ package broadcast
 
 import (
 	"net/http"
-    _ "fmt"
 	"github.com/MuhtasimTanmoy/messaging_server/internal/package/logger"
 	"github.com/gorilla/websocket"
 )
@@ -57,6 +56,10 @@ func (e *Websocket) HandleConnections(w http.ResponseWriter, r *http.Request, ch
 
 	if err != nil {
 		logger.Fatal(err)
+	}
+
+	if _, ok := e.Clients[channel]; !ok {
+		e.Clients[channel] = make(map[*websocket.Conn]bool)
 	}
 
 	// Make sure we close the connection when the function returns

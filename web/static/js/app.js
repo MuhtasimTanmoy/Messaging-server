@@ -19,6 +19,9 @@ new Vue({
     },
 
     created: function() {
+
+        console.log("Creating this"+ getUrlVars()["channel"])
+
         var self = this;
         this.ws = new WebSocket('ws://' + window.location.host + '/ws?channel=' + getUrlVars()["channel"]);
         this.ws.addEventListener('message', function(e) {
@@ -50,6 +53,8 @@ new Vue({
         },
 
         join: function () {
+
+            console.log("Joining")
 
             if (!this.email) {
                 Materialize.toast('You must enter an email', 2000);
