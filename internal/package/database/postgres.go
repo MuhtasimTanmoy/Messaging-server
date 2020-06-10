@@ -1,9 +1,8 @@
-import (
-	"database/sql"
-  "fmt"
+package database
 
+import (
   _ "github.com/lib/pq"
 )
 
-type MySQL struct {
+type Postgres struct {
 }

@@ -23,7 +23,7 @@ func main() {
     var configFile string
 
     // Flag
-    flag.StringVar(&configFile, "config", "config.dist.yml", "config")
+    flag.StringVar(&configFile, "config", "config.yml", "config")
     flag.Parse()
 
     viper.SetConfigFile(configFile)

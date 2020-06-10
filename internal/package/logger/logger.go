@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 	"time"
-
+    "github.com/spf13/viper"
 	"github.com/google/logger"
 )
 
@@ -13,22 +13,29 @@ const LogsPath = "var/logs"
 // Info log function
 func Info(v ...interface{}) {
 
-	logLevel := os.Getenv("AppLogLevel")
+	logLevel := viper.GetString("log.level")
 	ok := logLevel == "info"
 
 	if ok {
 		currentTime := time.Now().Local()
-		file := fmt.Sprintf("%s/%s.log", LogsPath, currentTime.Format("2006-01-02"))
+
+		file := fmt.Sprintf(
+			"%s%s/%s.log",
+			os.Getenv("BasePath"),
+			viper.GetString("log.path"),
+			currentTime.Format("2006-01-02"),
+		)
+
 		lf, err := os.OpenFile(file, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0660)
 
 		if err != nil {
 			logger.Fatalf("Failed to open log file: %v", err)
 		}
 
-		defer lf.Close()
+// 		defer lf.Close()
 
 		out := logger.Init("Hamster", false, false, lf)
-		defer out.Close()
+// 		defer out.Close()
 
 		out.Info(v...)
 	}
@@ -37,12 +44,17 @@ func Info(v ...interface{}) {
 // Infoln log function
 func Infoln(v ...interface{}) {
 
-	logLevel := os.Getenv("AppLogLevel")
+	logLevel := viper.GetString("log.level")
 	ok := logLevel == "info"
 
 	if ok {
 		currentTime := time.Now().Local()
-		file := fmt.Sprintf("%s/%s.log", LogsPath, currentTime.Format("2006-01-02"))
+		file := fmt.Sprintf(
+			"%s%s/%s.log",
+			os.Getenv("BasePath"),
+			viper.GetString("log.path"),
+			currentTime.Format("2006-01-02"),
+		)
 		lf, err := os.OpenFile(file, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0660)
 
 		if err != nil {
@@ -61,12 +73,17 @@ func Infoln(v ...interface{}) {
 // Infof log function
 func Infof(format string, v ...interface{}) {
 
-	logLevel := os.Getenv("AppLogLevel")
+	logLevel := viper.GetString("log.level")
 	ok := logLevel == "info"
 
 	if ok {
 		currentTime := time.Now().Local()
-		file := fmt.Sprintf("%s/%s.log", LogsPath, currentTime.Format("2006-01-02"))
+		file := fmt.Sprintf(
+			"%s%s/%s.log",
+			os.Getenv("BasePath"),
+			viper.GetString("log.path"),
+			currentTime.Format("2006-01-02"),
+		)
 		lf, err := os.OpenFile(file, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0660)
 
 		if err != nil {
@@ -85,12 +102,17 @@ func Infof(format string, v ...interface{}) {
 // Warning log function
 func Warning(v ...interface{}) {
 
-	logLevel := os.Getenv("AppLogLevel")
+	logLevel := viper.GetString("log.level")
 	ok := logLevel == "info" || logLevel == "warning"
 
 	if ok {
 		currentTime := time.Now().Local()
-		file := fmt.Sprintf("%s/%s.log", LogsPath, currentTime.Format("2006-01-02"))
+		file := fmt.Sprintf(
+			"%s%s/%s.log",
+			os.Getenv("BasePath"),
+			viper.GetString("log.path"),
+			currentTime.Format("2006-01-02"),
+		)
 		lf, err := os.OpenFile(file, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0660)
 
 		if err != nil {
@@ -109,12 +131,17 @@ func Warning(v ...interface{}) {
 // Warningln log function
 func Warningln(v ...interface{}) {
 
-	logLevel := os.Getenv("AppLogLevel")
+	logLevel := viper.GetString("log.level")
 	ok := logLevel == "info" || logLevel == "warning"
 
 	if ok {
 		currentTime := time.Now().Local()
-		file := fmt.Sprintf("%s/%s.log", LogsPath, currentTime.Format("2006-01-02"))
+		file := fmt.Sprintf(
+			"%s%s/%s.log",
+			os.Getenv("BasePath"),
+			viper.GetString("log.path"),
+			currentTime.Format("2006-01-02"),
+		)
 		lf, err := os.OpenFile(file, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0660)
 
 		if err != nil {
@@ -133,12 +160,17 @@ func Warningln(v ...interface{}) {
 // Warningf log function
 func Warningf(format string, v ...interface{}) {
 
-	logLevel := os.Getenv("AppLogLevel")
+	logLevel := viper.GetString("log.level")
 	ok := logLevel == "info" || logLevel == "warning"
 
 	if ok {
 		currentTime := time.Now().Local()
-		file := fmt.Sprintf("%s/%s.log", LogsPath, currentTime.Format("2006-01-02"))
+		file := fmt.Sprintf(
+			"%s%s/%s.log",
+			os.Getenv("BasePath"),
+			viper.GetString("log.path"),
+			currentTime.Format("2006-01-02"),
+		)
 		lf, err := os.OpenFile(file, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0660)
 
 		if err != nil {
@@ -157,12 +189,17 @@ func Warningf(format string, v ...interface{}) {
 // Error log function
 func Error(v ...interface{}) {
 
-	logLevel := os.Getenv("AppLogLevel")
+	logLevel := viper.GetString("log.level")
 	ok := logLevel == "info" || logLevel == "warning" || logLevel == "error"
 
 	if ok {
 		currentTime := time.Now().Local()
-		file := fmt.Sprintf("%s/%s.log", LogsPath, currentTime.Format("2006-01-02"))
+		file := fmt.Sprintf(
+			"%s%s/%s.log",
+			os.Getenv("BasePath"),
+			viper.GetString("log.path"),
+			currentTime.Format("2006-01-02"),
+		)
 		lf, err := os.OpenFile(file, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0660)
 
 		if err != nil {
@@ -181,12 +218,17 @@ func Error(v ...interface{}) {
 // Errorln log function
 func Errorln(v ...interface{}) {
 
-	logLevel := os.Getenv("AppLogLevel")
+	logLevel := viper.GetString("log.level")
 	ok := logLevel == "info" || logLevel == "warning" || logLevel == "error"
 
 	if ok {
 		currentTime := time.Now().Local()
-		file := fmt.Sprintf("%s/%s.log", LogsPath, currentTime.Format("2006-01-02"))
+		file := fmt.Sprintf(
+			"%s%s/%s.log",
+			os.Getenv("BasePath"),
+			viper.GetString("log.path"),
+			currentTime.Format("2006-01-02"),
+		)
 		lf, err := os.OpenFile(file, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0660)
 
 		if err != nil {
@@ -205,12 +247,17 @@ func Errorln(v ...interface{}) {
 // Errorf log function
 func Errorf(format string, v ...interface{}) {
 
-	logLevel := os.Getenv("AppLogLevel")
+	logLevel := viper.GetString("log.level")
 	ok := logLevel == "info" || logLevel == "warning" || logLevel == "error"
 
 	if ok {
 		currentTime := time.Now().Local()
-		file := fmt.Sprintf("%s/%s.log", LogsPath, currentTime.Format("2006-01-02"))
+		file := fmt.Sprintf(
+			"%s%s/%s.log",
+			os.Getenv("BasePath"),
+			viper.GetString("log.path"),
+			currentTime.Format("2006-01-02"),
+		)
 		lf, err := os.OpenFile(file, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0660)
 
 		if err != nil {
@@ -229,12 +276,17 @@ func Errorf(format string, v ...interface{}) {
 // Fatal log function
 func Fatal(v ...interface{}) {
 
-	logLevel := os.Getenv("AppLogLevel")
+	logLevel := viper.GetString("log.level")
 	ok := logLevel == "info" || logLevel == "warning" || logLevel == "error" || logLevel == "fatal"
 
 	if ok {
 		currentTime := time.Now().Local()
-		file := fmt.Sprintf("%s/%s.log", LogsPath, currentTime.Format("2006-01-02"))
+		file := fmt.Sprintf(
+			"%s%s/%s.log",
+			os.Getenv("BasePath"),
+			viper.GetString("log.path"),
+			currentTime.Format("2006-01-02"),
+		)
 		lf, err := os.OpenFile(file, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0660)
 
 		if err != nil {
@@ -253,12 +305,17 @@ func Fatal(v ...interface{}) {
 // Fatalln log function
 func Fatalln(v ...interface{}) {
 
-	logLevel := os.Getenv("AppLogLevel")
+	logLevel := viper.GetString("log.level")
 	ok := logLevel == "info" || logLevel == "warning" || logLevel == "error" || logLevel == "fatal"
 
 	if ok {
 		currentTime := time.Now().Local()
-		file := fmt.Sprintf("%s/%s.log", LogsPath, currentTime.Format("2006-01-02"))
+		file := fmt.Sprintf(
+			"%s%s/%s.log",
+			os.Getenv("BasePath"),
+			viper.GetString("log.path"),
+			currentTime.Format("2006-01-02"),
+		)
 		lf, err := os.OpenFile(file, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0660)
 
 		if err != nil {
@@ -277,12 +334,17 @@ func Fatalln(v ...interface{}) {
 // Fatalf log function
 func Fatalf(format string, v ...interface{}) {
 
-	logLevel := os.Getenv("AppLogLevel")
+	logLevel := viper.GetString("log.level")
 	ok := logLevel == "info" || logLevel == "warning" || logLevel == "error" || logLevel == "fatal"
 
 	if ok {
 		currentTime := time.Now().Local()
-		file := fmt.Sprintf("%s/%s.log", LogsPath, currentTime.Format("2006-01-02"))
+		file := fmt.Sprintf(
+			"%s%s/%s.log",
+			os.Getenv("BasePath"),
+			viper.GetString("log.path"),
+			currentTime.Format("2006-01-02"),
+		)
 		lf, err := os.OpenFile(file, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0660)
 
 		if err != nil {
