@@ -1,0 +1,14 @@
+app:
+    mode: dev
+    port: 8080
+    domain: example.com
+    secret: sWUhHRcs4Aqa0MEnYwbuQln3EW8CZ0oD
+
+log:
+    level: info
+    path: var/logs
+
+redis:
+    addr: localhost:6379
+    password:
+    db: 0
