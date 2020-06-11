@@ -8,7 +8,6 @@ import (
 	"github.com/MuhtasimTanmoy/messaging_server/internal/app/controller"
 	"github.com/MuhtasimTanmoy/messaging_server/internal/package/broadcast"
 	"github.com/MuhtasimTanmoy/messaging_server/internal/package/logger"
-	"github.com/MuhtasimTanmoy/messaging_server/internal/package/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	"flag"

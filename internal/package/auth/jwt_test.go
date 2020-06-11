@@ -35,7 +35,7 @@ func init() {
 
 
 // TestLogging test cases
-func TestLogging(t *testing.T) {
+func TestAuth(t *testing.T) {
 
     now := time.Now().Unix()
 	id := utils.GenerateUUID4()
