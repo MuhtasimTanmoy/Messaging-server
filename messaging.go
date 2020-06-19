@@ -41,8 +41,6 @@ func main() {
 
     ///////////////////////////////////////////////////////////////////
 
-
-
 	if os.Getenv("AppMode") == "prod" {
 		gin.SetMode(gin.ReleaseMode)
 		gin.DisableConsoleColor()
@@ -59,6 +57,7 @@ func main() {
 	// Route resolve
 	r.GET("/", controller.Index)
 	r.GET("/_healthcheck", controller.HealthCheck)
+	r.GET("/test", controller.Test)
 	r.GET("/favicon.ico", func(c *gin.Context) {
 		c.String(http.StatusNoContent, "")
 	})

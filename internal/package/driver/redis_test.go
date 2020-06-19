@@ -57,4 +57,32 @@ func TestRedis(t *testing.T) {
 	value, err := driver.Get("channel")
 	st.Expect(t, value, "test")
 	st.Expect(t, err, nil)
+
+	count, err := driver.NsDel("configs", "app_name")
+	st.Expect(t, int(count), 0)
+	st.Expect(t, err, nil)
+
+	ok, err = driver.NsSet("configs", "app_name", "Test")
+	st.Expect(t, ok, true)
+	st.Expect(t, err, nil)
+
+	ok, err = driver.NsExists("configs", "app_name")
+	st.Expect(t, ok, true)
+	st.Expect(t, err, nil)
+
+	value, err = driver.NsGet("configs", "app_name")
+	st.Expect(t, value, "Test")
+	st.Expect(t, err, nil)
+
+	count, err = driver.NsLen("configs")
+	st.Expect(t, int(count), 1)
+	st.Expect(t, err, nil)
+
+	count, err = driver.NsDel("configs", "app_name")
+	st.Expect(t, int(count), 1)
+	st.Expect(t, err, nil)
+
+	count, err = driver.NsTruncate("configs")
+	st.Expect(t, int(count), 0)
+	st.Expect(t, err, nil)
 }

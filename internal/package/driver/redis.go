@@ -93,3 +93,78 @@ func (r *Redis) Del(key string) (int64, error) {
 
 	return result.Val(), nil
 }
+
+
+
+// NsSet sets a record in Namespace
+func (r *Redis) NsSet(ns, field, value string) (bool, error) {
+	result := r.Client.HSet(ns, field, value)
+
+	if result.Err() != nil {
+		return false, result.Err()
+	}
+
+	return result.Val(), nil
+}
+
+// NsGet gets a record value from Namespace
+func (r *Redis) NsGet(ns, field string) (string, error) {
+	result := r.Client.HGet(ns, field)
+
+	if result.Err() != nil {
+		return "", result.Err()
+	}
+
+	return result.Val(), nil
+}
+
+//NsExists checks field in namespace
+func (r *Redis) NsExists(ns, field string) (bool, error){
+	result := r.Client.HExists(ns, field)
+
+	if result.Err() != nil {
+		return false, result.Err()
+	}
+
+	return result.Val(), nil
+}
+
+//NsDel deletes field in Namespace
+func (r *Redis) NsDel(ns, field string) (int64, error){
+	result := r.Client.HDel(ns, field)
+
+	if result.Err() != nil {
+		return 0, result.Err()
+	}
+
+	return result.Val(), nil
+}
+
+// NsLen returns the length of fields in Namespace
+func (r *Redis) NsLen(ns string) (int64, error){
+	result := r.Client.HLen(ns)
+
+	if result.Err() != nil {
+		return 0, result.Err()
+	}
+
+	return result.Val(), nil
+}
+
+
+// NsTruncate deletes a Namespace
+func (r *Redis) NsTruncate(ns string) (int64, error) {
+	result := r.Client.Del(ns)
+
+	if result.Err() != nil {
+		return 0, result.Err()
+	}
+
+	return result.Val(), nil
+}
+
+
+// NsScan return an iterative obj for a hash
+func (r *Redis) NsScan(key string, cursor uint64, match string, count int64) *redis.ScanCmd {
+	return r.Client.HScan(key, cursor, match, count)
+}
