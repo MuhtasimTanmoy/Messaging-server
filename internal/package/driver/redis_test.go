@@ -42,9 +42,9 @@ func TestRedis(t *testing.T) {
 	st.Expect(t, ok, true)
 	st.Expect(t, err, nil)
 
-	count, err := driver.Del("channel")
-	st.Expect(t, int(count), 0)
-	st.Expect(t, err, nil)
+	// count, err := driver.Del("channel")
+	// st.Expect(t, int(count), 0)
+	// st.Expect(t, err, nil)
 
 	ok, err = driver.Set("channel", "test", 0)
 	st.Expect(t, ok, true)
